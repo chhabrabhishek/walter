@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:number_to_character/number_to_character.dart';
+import 'package:intl/intl.dart';
 import 'package:walter/models/saul.dart';
 import 'package:walter/utilities/databaseUtility.dart';
 
@@ -25,7 +25,6 @@ class _SaulWidgetState extends State<SaulWidget> {
   final database = DatabaseUtility.instance;
   late Future<List<Saul>> saulList;
   int balance = 0;
-  var converter = NumberToCharacterConverter('en');
   @override
   void initState() {
     super.initState();
@@ -45,6 +44,12 @@ class _SaulWidgetState extends State<SaulWidget> {
       future: saulList,
       builder: ((context, snapshot) {
         if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          var me = snapshot.data!;
+          me.sort(
+            ((a, b) => DateTime.parse(b.dateOfTransaction).compareTo(
+                  DateTime.parse(a.dateOfTransaction),
+                )),
+          );
           return Column(
             children: [
               Padding(
@@ -56,7 +61,7 @@ class _SaulWidgetState extends State<SaulWidget> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 0, 0),
                       child: Text(
-                        'Balance: ${snapshot.data!.toList().fold<int>(
+                        'Balance: ${me.toList().fold<int>(
                           0,
                           (previousValue, minion) {
                             return previousValue +
@@ -64,7 +69,7 @@ class _SaulWidgetState extends State<SaulWidget> {
                                     ? -minion.amount
                                     : minion.amount);
                           },
-                        )}₹',
+                        )} ₹',
                         style: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 20,
@@ -77,14 +82,11 @@ class _SaulWidgetState extends State<SaulWidget> {
               ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: snapshot.data!.length,
+                itemCount: me.length,
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onLongPress: () {
-                      database
-                          .deleteSaul(
-                              snapshot.data![index].saulId?.toInt() ?? 0)
-                          .then(
+                      database.deleteSaul(me[index].saulId?.toInt() ?? 0).then(
                             (value) => {
                               setState(
                                 () {
@@ -105,7 +107,7 @@ class _SaulWidgetState extends State<SaulWidget> {
                           child: Column(
                             children: [
                               Text(
-                                '₹${snapshot.data![index].amount} (${converter.convertInt(snapshot.data![index].amount).toTitleCase()})',
+                                '₹ ${me[index].amount}',
                                 textAlign: TextAlign.center,
                                 style: const TextStyle(
                                   fontSize: 20,
@@ -115,13 +117,13 @@ class _SaulWidgetState extends State<SaulWidget> {
                               Padding(
                                 padding: const EdgeInsets.only(top: 8),
                                 child: Text(
-                                  snapshot.data![index].isDebited == 1
+                                  me[index].isDebited == 1
                                       ? 'Debited'
                                       : 'Credited',
                                   style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
-                                    color: snapshot.data![index].isDebited == 1
+                                    color: me[index].isDebited == 1
                                         ? Colors.red
                                         : Colors.green,
                                   ),
@@ -132,7 +134,10 @@ class _SaulWidgetState extends State<SaulWidget> {
                                 child: Container(
                                   alignment: Alignment.bottomLeft,
                                   child: Text(
-                                    snapshot.data![index].dateOfTransaction,
+                                    DateFormat('dd-MM-yyyy').format(
+                                      DateTime.parse(
+                                          me[index].dateOfTransaction),
+                                    ),
                                     textAlign: TextAlign.right,
                                   ),
                                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:walter/screens/minions.dart';
 
 class LoginWidget extends StatefulWidget {
@@ -9,7 +10,6 @@ class LoginWidget extends StatefulWidget {
 }
 
 class _LoginWidgetState extends State<LoginWidget> {
-  final usernameController = TextEditingController();
   final passwordController = TextEditingController();
 
   @override
@@ -25,45 +25,12 @@ class _LoginWidgetState extends State<LoginWidget> {
               vertical: 10,
             ),
             child: TextField(
-              controller: usernameController,
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      10,
-                    ),
-                  ),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(
-                      10,
-                    ),
-                  ),
-                ),
-                labelText: 'username',
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                ),
-                hintText: 'enter your username ...',
-                prefixIcon: Icon(
-                  Icons.person,
-                  color: Colors.white,
-                ),
-              ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 25,
-              vertical: 10,
-            ),
-            child: TextField(
               controller: passwordController,
               obscureText: true,
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly,
+              ],
               decoration: const InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(
@@ -99,8 +66,7 @@ class _LoginWidgetState extends State<LoginWidget> {
             child: FloatingActionButton(
               backgroundColor: Colors.white,
               onPressed: () => {
-                if (usernameController.text == "1" &&
-                    passwordController.text == "1")
+                if (passwordController.text == "1968")
                   {
                     Navigator.push(
                       context,
@@ -114,7 +80,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text(
-                          'please enter the correct information',
+                          'please enter the correct password',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.white,
