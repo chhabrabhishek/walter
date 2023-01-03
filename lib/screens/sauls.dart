@@ -10,9 +10,16 @@ import 'package:date_time_picker/date_time_picker.dart';
 const List<String> statusOptions = <String>['Debited', 'Credited'];
 
 class Sauls extends StatefulWidget {
-  const Sauls({super.key, required this.kevinId});
+  const Sauls({
+    super.key,
+    required this.kevinId,
+    required this.name,
+    required this.bankName,
+  });
 
   final int? kevinId;
+  final String? name;
+  final String? bankName;
 
   @override
   State<Sauls> createState() => _SaulsState();
@@ -34,10 +41,10 @@ class _SaulsState extends State<Sauls> {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'walter',
+            '${widget.name?.toString().split(" ")[0]} (${widget.bankName?.toString()})',
             style: GoogleFonts.dosis(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
+              fontSize: 20,
             ),
           ),
           centerTitle: false,

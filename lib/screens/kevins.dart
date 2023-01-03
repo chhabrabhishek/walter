@@ -3,9 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:walter/widgets/kevinwidget.dart';
 
 class Kevins extends StatelessWidget {
-  const Kevins({super.key, required this.minionId});
+  const Kevins({super.key, required this.minionId, required this.name});
 
   final int? minionId;
+  final String? name;
 
   @override
   Widget build(BuildContext context) {
@@ -16,10 +17,10 @@ class Kevins extends StatelessWidget {
       home: Scaffold(
         appBar: AppBar(
           title: Text(
-            'walter',
+            name?.toString() ?? '',
             style: GoogleFonts.dosis(
               fontWeight: FontWeight.bold,
-              fontSize: 25,
+              fontSize: 20,
             ),
           ),
           centerTitle: false,
@@ -40,7 +41,7 @@ class Kevins extends StatelessWidget {
             ),
           ],
         ),
-        body: KevinWidget(minionId: minionId),
+        body: KevinWidget(minionId: minionId, name: name),
       ),
     );
   }
