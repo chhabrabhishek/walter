@@ -17,9 +17,13 @@ class _MinionsWidgetState extends State<MinionsWidget> {
   void initState() {
     super.initState();
 
-    minionList = database.readAll(tableMinions).then(
-          (value) => value.map((json) => Minion.fromJson(json)).toList(),
-        );
+    minionList = database.minionRead();
+  }
+
+  @override
+  void didUpdateWidget(MinionsWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    minionList = database.minionRead();
   }
 
   @override

@@ -49,7 +49,7 @@ class _LoginWidgetState extends State<LoginWidget> {
                     ),
                   ),
                 ),
-                labelText: 'password',
+                labelText: 'Password',
                 labelStyle: TextStyle(
                   color: Colors.white,
                 ),

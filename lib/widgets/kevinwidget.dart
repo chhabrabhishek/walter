@@ -24,6 +24,12 @@ class _KevinWidgetState extends State<KevinWidget> {
   }
 
   @override
+  void didUpdateWidget(KevinWidget oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    kevinList = database.kevinRead(widget.minionId);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 5, 0, 10),

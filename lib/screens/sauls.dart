@@ -104,7 +104,7 @@ class _SaulsState extends State<Sauls> {
                               ),
                             ),
                           ),
-                          labelText: 'amount',
+                          labelText: 'Amount',
                           labelStyle: TextStyle(
                             color: Colors.white,
                           ),

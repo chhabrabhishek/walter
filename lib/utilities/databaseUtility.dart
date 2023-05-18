@@ -48,9 +48,22 @@ class DatabaseUtility {
     return minion.copy(minionId: minionId);
   }
 
+  Future<Kevin> createKevin(Kevin kevin) async {
+    final db = await instance.database;
+    final kevinId = await db.insert(tableKevin, kevin.toJson());
+    return kevin.copy(kevinId: kevinId);
+  }
+
   Future<Saul> createSaul(Saul saul) async {
     final db = await instance.database;
     final saulId = await db.insert(tableSaul, saul.toJson());
+    return saul.copy(saulId: saulId);
+  }
+
+  Future<Saul> updateSaul(Saul saul) async {
+    final db = await instance.database;
+    final saulId = await db.update(tableSaul, saul.toJson(),
+        where: "saulId = ?", whereArgs: [saul.saulId]);
     return saul.copy(saulId: saulId);
   }
 
@@ -61,16 +74,16 @@ class DatabaseUtility {
     return saul;
   }
 
-  Future<Minion> minionRead(int minionId) async {
+  Future<List<Minion>> minionRead() async {
     final db = await instance.database;
-    final minion = await db.query(tableMinions,
-        columns: MinionsFields.values,
-        where: '${MinionsFields.minionId} = ?',
-        whereArgs: [minionId]);
-    if (minion.isNotEmpty) {
-      return Minion.fromJson(minion.first);
+    final minionsList = await db.query(
+      tableMinions,
+      columns: MinionsFields.values,
+    );
+    if (minionsList.isNotEmpty) {
+      return minionsList.map((json) => Minion.fromJson(json)).toList();
     } else {
-      throw Exception('ID $minionId not found');
+      throw Exception('Unable to create');
     }
   }
 
